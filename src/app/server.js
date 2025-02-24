@@ -7,13 +7,13 @@ const lusca = require("lusca");
 dotenv.config();
 
 const postRoutes=require("../modules/activityFeed/routes/postRoutes.js")
-// Load .env vars - move this to top
-
+// Load env vars - move this to top
+dotenv.config({ path: "./.env" });
 
 const { connectToDB } = require("../utils/db.js");
 const routes = require("./routes.js");
 const passport = require("passport");
-// require("../utils/passportGoogle.js");
+require("../utils/passportGoogle.js");
 
 const port = process.env.PORT || 8000;
 
@@ -32,7 +32,7 @@ app.use(
     },
   })
 );
-// app.use(lusca.csrf());
+app.use(lusca.csrf());
 
 app.use(passport.initialize());
 app.use(passport.session());

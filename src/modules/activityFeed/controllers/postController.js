@@ -17,8 +17,8 @@ const createPost = async (req, res) => {
     const author = req.user?.id; // Ensure req.user exists
     if (!author) {
       return res
-        .status(401)
-        .json({ success: false, message: "Unauthorized. Please log in." });
+          .status(401)
+          .json({ success: false, message: "Unauthorized. Please log in." });
     }
 
     const { content } = req.body;
@@ -28,8 +28,8 @@ const createPost = async (req, res) => {
 
     if (!user) {
       return res
-        .status(404)
-        .json({ success: false, message: "User Not Found. Login Again!" });
+          .status(404)
+          .json({ success: false, message: "User Not Found. Login Again!" });
     }
 
     // Upload media to Cloudinary
@@ -95,6 +95,7 @@ const fetchAllPost = async (req, res, next) => {
 
     const posts = await Post.find({ author: { $ne: userId } })
       .populate("author", "name title profileImg userType createdAt updatedAt")
+      .populate("likes", "name title profileImg userType likedAt")
       .populate(
         "comments.user",
         "name title profileImg userType createdAt updatedAt"
@@ -125,6 +126,7 @@ const fetchPostById = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.id)
       .populate("author", "name title profileImg userType createdAt updatedAt")
+      .populate("likes", "name title profileImg userType likedAt")
       .populate(
         "comments.user",
         "name title profileImg userType createdAt updatedAt"
