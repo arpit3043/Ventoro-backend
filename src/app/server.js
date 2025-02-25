@@ -13,6 +13,7 @@ dotenv.config({ path: "./.env" });
 const { connectToDB } = require("../utils/db.js");
 const routes = require("./routes.js");
 const passport = require("passport");
+const { getShortenUrl } = require("../modules/urlShortner/controllers/urlShortnerController.js");
 require("../utils/passportGoogle.js"); 
 
 const port = process.env.PORT || 8000;
@@ -32,7 +33,7 @@ app.use(
     },
   })
 );
-app.use(lusca.csrf());
+// app.use(lusca.csrf());
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -47,7 +48,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-
+app.get("/:shortId", getShortenUrl);
 app.use("/api", routes);
 
 
