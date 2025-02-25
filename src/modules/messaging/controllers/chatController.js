@@ -1,4 +1,4 @@
-const Chat = require("./models/chatModel");
+const Chat = require("../models/chatModel");
 const {User} = require("../../auth/models/userModel");
 
 //create a one on one chat or group chat

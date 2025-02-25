@@ -1,5 +1,5 @@
-const Chat = require("./models/chatModel");
-const Message = require("./models/messageModel");
+const Chat = require("../models/chatModel");
+const Message = require("../models/messageModel");
 const {User} = require("../../auth/models/userModel");
 
 //send a message

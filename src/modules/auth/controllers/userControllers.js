@@ -2,7 +2,7 @@ const passport = require("passport");
 const { User } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const { validateUserCredentials } = require("../../../utils/validations");
-const {ConnectionRequest} = require("../models/connectionRequestModel");
+const { ConnectionRequest } = require("../models/ConnectionRequestModel");
 
 
 const userData = async (req, res) => {
