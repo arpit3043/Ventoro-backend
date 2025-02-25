@@ -4,7 +4,7 @@ const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const session = require("express-session");
 const lusca = require("lusca");
-
+dotenv.config();
 
 const postRoutes=require("../modules/activityFeed/routes/postRoutes.js")
 // Load env vars - move this to top
@@ -14,7 +14,7 @@ const { connectToDB } = require("../utils/db.js");
 const routes = require("./routes.js");
 const passport = require("passport");
 const { getShortenUrl } = require("../modules/urlShortner/controllers/urlShortnerController.js");
-require("../utils/passportGoogle.js"); 
+require("../utils/passportGoogle.js");
 
 const port = process.env.PORT || 8000;
 
