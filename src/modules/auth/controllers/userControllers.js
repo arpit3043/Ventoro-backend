@@ -2,7 +2,7 @@ const passport = require("passport");
 const { User } = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const { validateUserCredentials } = require("../../../utils/validations");
-
+const cloudinary = require("cloudinary").v2;
 
 const userData = async (req, res) => {
   try {
@@ -239,6 +239,46 @@ const googleOAuthCallback = async (req, res, next) => {
   )(req, res, next);
 };
 
+
+
+const editData = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    let updates = { ...req.body };
+
+    // Prevent updating email or password directly
+    delete updates.email;
+    delete updates.password;
+
+  
+    if (req.files?.profileImage) {
+      updates.profileImg = req.files.profileImage[0].path;
+    }
+
+    if (req.files?.coverImage) {
+      updates.coverImg = req.files.coverImage[0].path;
+    }
+  
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updates },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   userData,
   loginUser,
@@ -246,4 +286,5 @@ module.exports = {
   registerUser,
   googleOAuthLogin,
   googleOAuthCallback,
+  editData,
 };

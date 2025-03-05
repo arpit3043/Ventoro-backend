@@ -71,7 +71,7 @@ const registerInvestor = async (req, res) => {
 
 const getInvestorProfile = async (req, res) => {
   try {
-    const investor = await Investor.findById(req.params.id)
+    const investor = await Investor.findOne({userId:req.params.id})
       .populate('userId', 'name email')
       .lean();
       
@@ -108,7 +108,10 @@ const getInvestorProfile = async (req, res) => {
 const updateInvestorProfile = async (req, res) => {
   try {
     let investor = await Investor.findById(req.params.id)
-      .populate('userId', 'name email');
+    .populate(
+      "userId",
+      "name email"
+    );
 
     if (!investor) {
       return res.status(404).json({
@@ -118,7 +121,7 @@ const updateInvestorProfile = async (req, res) => {
     }
 
     // Check if user owns this profile
-    if (investor.userId._id.toString() !== req.user._id.toString()) {
+    if (investor.userId._id.toString() !== req.user.id.toString()) {
       return res.status(403).json({
         success: false,
         message: "You can only update your own profile"
@@ -151,16 +154,13 @@ const updateInvestorProfile = async (req, res) => {
       message: "Profile updated successfully",
       data: {
         id: investor._id,
-        startUpName: investor.startUpName,
-        businessIdea: investor.businessIdea,
-        traction: investor.traction,
-        fundingNeeds: investor.fundingNeeds,
-        projectPortfolio: investor.projectPortfolio,
-        milestoneTracker: investor.milestoneTracker,
-        userId: investor.userId._id,
-        userName: investor.userId.name,
-        userEmail: investor.userId.email,
-        updatedAt: investor.updatedAt
+      experience: investor.experience,
+      investmentPreferences: investor.investmentPreferences,
+      geographicalFocus: investor.geographicalFocus,
+      portfolio: investor.portfolio,
+      userId: investor.userId._id,
+      userName: investor.userId.name,
+      userEmail: investor.userId.email
       }
     });
   } catch (error) {

@@ -60,6 +60,7 @@ const registerFounder = async (req, res) => {
       businessIdea,
       traction,
       fundingNeeds,
+      startupType,
       projectPortfolio: {
         pitchDeck: pitchDeck ? { url: pitchDeck.secure_url, publicId: pitchDeck.public_id, fileType: pitchDeck.format } : null,
         productDemos: productDemos.map(demo => ({ url: demo.secure_url, publicId: demo.public_id, fileType: demo.format })),
@@ -136,8 +137,8 @@ const followUser = async (req, res) => {
 
 const getFounderProfile = async (req, res) => {
   try {
-    const founder = await Founder.findById(req.params.id)
-      .populate('userId', 'name email')
+    const founder = await Founder.findOne({ userId: req.params.id })
+      .populate("userId", "name email")
       .lean();
       
     if (!founder) {
@@ -156,6 +157,7 @@ const getFounderProfile = async (req, res) => {
       projectPortfolio: founder.projectPortfolio,
       location: founder.location,
       industry: founder.industry,
+      startupStage: founder.startupStage, 
       milestoneTracker: founder.milestoneTracker,
       userId: founder.userId._id,
       userName: founder.userId.name,
@@ -187,7 +189,7 @@ const updateFounderProfile = async (req, res) => {
     }
 
     // Check if user owns this profile
-    if (founder.userId._id.toString() !== req.user._id.toString()) {
+    if (founder.userId._id.toString() !== req.user.id.toString()) {
       return res.status(403).json({
         success: false,
         message: "You can only update your own profile"
@@ -226,6 +228,8 @@ const updateFounderProfile = async (req, res) => {
         fundingNeeds: founder.fundingNeeds,
         projectPortfolio: founder.projectPortfolio,
         milestoneTracker: founder.milestoneTracker,
+        industry: founder.industry,
+        startupStage: founder.startupStage, 
         userId: founder.userId._id,
         userName: founder.userId.name,
         userEmail: founder.userId.email,
