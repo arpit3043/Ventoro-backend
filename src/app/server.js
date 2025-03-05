@@ -4,6 +4,9 @@ const cookieParser = require("cookie-parser");
 const cors = require('cors');
 const session = require("express-session");
 const lusca = require("lusca");
+// const Experience = require('../modules/auth/models/ExperienceModel.js');
+// const Achievement = require('../modules/auth/models/AchievementModel.js');
+
 
 
 const postRoutes=require("../modules/activityFeed/routes/postRoutes.js")
@@ -32,7 +35,7 @@ app.use(
     },
   })
 );
-app.use(lusca.csrf());
+//app.use(lusca.csrf());
 
 app.use(passport.initialize());
 app.use(passport.session());

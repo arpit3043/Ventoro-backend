@@ -3,6 +3,8 @@ const postController = require("../controllers/postController");
 const { isAuthenticated } = require("../../../middlewares/auth");
 const upload = require("../../../utils/multer");
 const router = express.Router();
+// const Experience = require('../models/Experience');
+// const Achievement = require('../models/Achievement');
 
 router
   .route("/post/createPost")

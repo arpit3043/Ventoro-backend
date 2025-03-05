@@ -1,7 +1,7 @@
 const express = require("express");
 const founderController = require("../controllers/founderControllers");
 const { isAuthenticated } = require("../../../middlewares/auth");
-const handleFileUpload = require("../../../middlewares/fileUpload");
+const {handleFileUpload} = require("../../../middlewares/fileUpload");
 
 const router = express.Router();
 
